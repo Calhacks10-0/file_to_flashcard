@@ -10,8 +10,5 @@ export const Home = () => {
   return (
     usid && 
     <FileUpload/>
-
-      
-    
   );
 };
