@@ -13,6 +13,7 @@ Replace <repository-url> with the link of this repository.
 
 `cd quizzical`
 <br>
+Go into main directory
 <br>
 `cd client`
 <br>
@@ -47,5 +48,5 @@ You also have to install the necessary python libraries with the pip command
 `pip install moviepy`
 <br>
 <br>
-`pip install ffmpeg'
+`pip install ffmpeg`
 <br>
