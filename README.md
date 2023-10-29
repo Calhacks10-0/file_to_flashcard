@@ -1,6 +1,8 @@
 # Welcome to Quizzical
 Quizzical is an AI powered tool for effective studying. Take advantage of our innovative flashcards and concise summaries to level up your study routine. 
 
+## How it works
+Quizzical is the perfect tool to use while studying. Simply upload your lecture notes, slides, or lecture recordings. Our efficient algorithm will scrape all of the relevant information from the uploaded files and generate custom flashcards for you to practice along with all the main points gathered from the file.
 ## Installation
 You will need to use npm and pip to install all the necessary packages.
 
