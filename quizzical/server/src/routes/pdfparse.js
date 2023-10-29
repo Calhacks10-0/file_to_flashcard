@@ -42,12 +42,6 @@ router.post(
                 reject(error);
                 return;
               }
-              // if (stderr.trim().length > 0) {
-              //   console.log(stderr);
-              //   console.log("abc2");
-              //   reject(stderr);
-              //   return;
-              // }
               console.log(`stdout: ${stdout}`);
               let file_contents = readFileSync(path_to_output_text_file, { encoding: "utf-8" });
               console.log(file_contents);
@@ -130,7 +124,7 @@ router.post(
             model: "togethercomputer/llama-2-70b-chat",
             prompt:
               "<s>[INST]<<SYS>>" +
-              "Identify the main topic as well as certain important subtopics of the text provided. Generate a detailed summary of the provided text and it should be thorough enough that someone can study for a test by reading the summary. Output should be less than 512 tokens and should be in complete sentences. Enter newline after main topic and each subtopic" +
+              "Generate a detailed summary of the provided text and it should be thorough enough that someone can study for a test by reading the summary. Output should be less than 512 tokens and should be in complete sentences" +
               "Here is some example text: Cells are largely composed of compounds that contain carbon. The study of how carbon atoms interact with other atoms in molecular compounds forms the basis of the field of organic chemistry and plays a large role in understanding the basic functions of cells. Because carbon atoms can form stable bonds with four other atoms, they are uniquely suited for the construction of complex molecules. These complex molecules are typically made up of chains and rings that contain hydrogen, oxygen, and nitrogen atoms, as well as carbon atoms. These molecules may consist of anywhere from 10 to millions of atoms linked together in specific arrays. Most, but not all, of the carbon-containing molecules in cells are built up from members of one of four different families of small organic molecules: sugars, amino acids, nucleotides, and fatty acids. Each of these families contains a group of molecules that resemble one another in both structure and function. In addition to other important functions, these molecules are used to build large macromolecules. For example, the sugars can be linked to form polysaccharides such as starch and glycogen, the amino acids can be linked to form proteins, the nucleotides can be linked to form the DNA (deoxyribonucleic acid) and RNA (ribonucleic acid) of chromosomes, and the fatty acids can be linked to form the lipids of all cell membranes." +
               "The corresponding summary is: Carbon-containing compounds are fundamental in cells and organic chemistry. Carbon's ability to form stable bonds with other atoms enables the creation of complex molecules in cells. These molecules consist of chains and rings with carbon, hydrogen, oxygen, and nitrogen atoms, ranging in size from small to large. Most cell molecules fall into four categories: sugars, amino acids, nucleotides, and fatty acids. These families share structural and functional similarities and are crucial in building large macromolecules. Sugars create polysaccharides, amino acids make proteins, nucleotides form DNA and RNA, and fatty acids produce cell membrane lipids. This molecular diversity is vital for cell function and organic chemistry." +
               "<</SYS>>" +
