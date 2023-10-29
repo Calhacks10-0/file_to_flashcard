@@ -22,7 +22,9 @@ router.post(
       }
 
       let text;
-      if (JSON.stringify(req.file).split(".").pop().toLowerCase() == "pdf") {
+      console.log("abc");
+      if (req.file.originalname.split(".").pop().toLowerCase() == "pdf")
+      {
         const pdfFile = req.file;
         const data = await pdf(pdfFile.buffer); // Use "buffer" property to access the file data
         text = data.text;
@@ -55,7 +57,7 @@ router.post(
         });
 
         text = await python_promise;
-        console.log(text);
+        //console.log(text);
       }
 
       // Maximum token limit (e.g., 32000 for your model)
@@ -119,11 +121,11 @@ router.post(
             stop: ["[INST]", "</s>"],
           },
         };
-
+        let flashcards;
         axios
           .request(options)
           .then(function (response) {
-            const flashcards = response.data.output.choices.map((item) => {
+            flashcards = response.data.output.choices.map((item) => {
               const text = item.text;
               // Split the text into flashcards using '\nFront: ' as the separator
               const flashcardChunks = text.split("\nFront: ");
@@ -142,14 +144,15 @@ router.post(
               return frontAndBack;
             });
             console.log(flashcards);
+            const lengtt = flashcards[0].length; 
+            res.json({ text, flashcards, lengtt });
+
           })
           .catch(function (error) {
             console.error(`Error for chunk ${i}:`, error);
           });
       }
-      const flashcards = "A";
 
-      res.json({ text, flashcards });
     } catch (error) {
       console.error("Error extracting text:", error);
       res.status(500).json({ error: "Text extraction failed." });
