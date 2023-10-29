@@ -21,6 +21,7 @@ export const FileUpload = () => {
         .post("http://localhost:3001/pdf/extract-text", formData)
         .then((response) => {
           console.log("Extracted text from the PDF:", response.data.text);
+          console.log("Flashcards generated: ", response.data.flashcards); 
         })
         .catch((error) => {
           console.error("Error:", error);
