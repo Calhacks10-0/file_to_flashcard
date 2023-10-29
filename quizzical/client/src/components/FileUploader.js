@@ -7,6 +7,7 @@ export const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [flash, setFlash] = useState([]);
   const [lengthh, setLengthh] = useState(0);
+  const [summary, setSummary] = useState("");
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -25,6 +26,7 @@ export const FileUpload = () => {
           console.log("Flashcards generated: ", response.data.flashcards);
           setLengthh(response.data.lengtt); 
           setFlash(response.data.flashcards);
+          setSummary(response.data.summary); 
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -58,7 +60,7 @@ export const FileUpload = () => {
       <br></br>
 
       <div>
-        <Flashcard flashcards={flash} len={lengthh} />
+        <Flashcard flashcards={flash} len={lengthh} summary={summary} />
       </div>
     </div>
   );
