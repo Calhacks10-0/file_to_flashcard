@@ -9,17 +9,21 @@ You will need to use npm and pip to install all the necessary packages.
 
 Replace <repository-url> with the link of this repository.
 
-'''
+
 `cd quizzical`
+<br>
 `cd client`
+<br>
 `npm install`
-'''
+
 Install all of the necessary front-end dependencies with the above commands
 
-'''
+
 `cd ..`
+<br>
 `cd server`
+<br>
 `npm install`
-'''
+
 
 Install all of the necesseary back-end dependencies with the above commands.
