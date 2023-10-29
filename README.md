@@ -13,17 +13,26 @@ Replace <repository-url> with the link of this repository.
 `cd quizzical`
 <br>
 `cd client`
+Switch into the client directory
 <br>
 `npm install`
-
 Install all of the necessary front-end dependencies with the above commands
-
+<br>
 
 `cd ..`
+Switch back to the parent directory, quizzical.
 <br>
 `cd server`
+Switch into the server directory
 <br>
 `npm install`
-
-
 Install all of the necesseary back-end dependencies with the above commands.
+<br>
+You also have to install the necessary python libraries with the pip command
+<br>
+`pip install  git+https://github.com/openai/whisper.git`
+<br>
+`pip install moviepy`
+<br>
+`pip install ffmpeg'
+<br>
