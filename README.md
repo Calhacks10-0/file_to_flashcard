@@ -15,6 +15,7 @@ Replace <repository-url> with the link of this repository.
 <br>
 Go into main directory
 <br>
+<br>
 `cd client`
 <br>
 Switch into the client directory
