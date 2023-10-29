@@ -2,6 +2,10 @@ import express from "express";
 import pdf from "pdf-parse";
 import multer from "multer";
 import axios from "axios";
+import { exec } from "child_process";
+import { readFile, writeFile } from "fs/promises";
+import { readFileSync} from "fs";
+
 const router = express.Router();
 
 // Multer storage configuration
@@ -17,10 +21,42 @@ router.post(
         return res.status(400).json({ error: "No file uploaded" });
       }
 
-      const pdfFile = req.file;
-      const data = await pdf(pdfFile.buffer); // Use "buffer" property to access the file data
-      const text = data.text;
-      console.log("The length of the text is ", text.length);
+      let text;
+      if (JSON.stringify(req.file).split(".").pop().toLowerCase() == "pdf") {
+        const pdfFile = req.file;
+        const data = await pdf(pdfFile.buffer); // Use "buffer" property to access the file data
+        text = data.text;
+        console.log("The length of the text is ", text.length);
+      } else {
+        await writeFile("vid.mp4", req.file.buffer);
+        const path_to_output_text_file = "transcription.txt";
+        let python_promise = new Promise((resolve, reject) => {
+          exec(
+            `python3 videoToText.py vid.mp4`,
+            (error, stdout, stderr) => {
+
+              if (error) {
+                console.log("abc1");
+                reject(error);
+                return;
+              }
+              // if (stderr.trim().length > 0) {
+              //   console.log(stderr);
+              //   console.log("abc2");
+              //   reject(stderr);
+              //   return;
+              // }
+              console.log(`stdout: ${stdout}`);
+              let file_contents = readFileSync(path_to_output_text_file, { encoding: "utf-8" });
+              console.log(file_contents);
+              resolve(file_contents);
+            }
+          );
+        });
+
+        text = await python_promise;
+        console.log(text);
+      }
 
       // Maximum token limit (e.g., 32000 for your model)
       const maxTokenLimit = 10000;
@@ -71,7 +107,7 @@ router.post(
               "<s>[INST]<<SYS>>" +
               "Generate front and back flashcards to cover the entire material in the provided text. These flashcards will be used to study for extremely important final exams." +
               "The back of a flashcard should be a single statement with no option for multiple responses. Here is an example: It is written that: Canada is a country in the Northern Hemisphere" +
-              "Your flash card should follow this type of format - Front: What hemisphere is Canada in? Back: Northern Hemisphere" +
+              "Your flash card should follow this type of format - Front: What hemisphere is Canada in? Back: Northern Hemisphere. Also one very important thing is to not have incomplete sentences in either front or back. If there are incomplete sentences for back just leave the back blank" +
               "<</SYS>>" +
               `${textChunk}` +
               "[/INST]",
@@ -80,7 +116,7 @@ router.post(
             top_p: 0.7,
             top_k: 50,
             repetition_penalty: 1,
-            stop: ["[INST]","</s>"]
+            stop: ["[INST]", "</s>"],
           },
         };
 
@@ -90,22 +126,22 @@ router.post(
             const flashcards = response.data.output.choices.map((item) => {
               const text = item.text;
               // Split the text into flashcards using '\nFront: ' as the separator
-              const flashcardChunks = text.split('\nFront: ');
-            
+              const flashcardChunks = text.split("\nFront: ");
+
               // Remove the first filler text and discard empty flashcards (those without a back)
               const filteredFlashcards = flashcardChunks
                 .slice(1) // Skip the first filler text
-                .filter((flashcard) => flashcard.includes('Back: ')); // Only keep flashcards with a back
-            
+                .filter((flashcard) => flashcard.includes("Back: ")); // Only keep flashcards with a back
+
               // Split each flashcard into front and back
               const frontAndBack = filteredFlashcards.map((flashcard) => {
-                const [front, back] = flashcard.split('\nBack: ');
+                const [front, back] = flashcard.split("\nBack: ");
                 return { front, back };
               });
-            
+
               return frontAndBack;
             });
-            console.log(flashcards); 
+            console.log(flashcards);
           })
           .catch(function (error) {
             console.error(`Error for chunk ${i}:`, error);
