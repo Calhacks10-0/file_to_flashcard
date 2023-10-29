@@ -1,10 +1,11 @@
 import moviepy.editor
 import whisper
+from sys import argv
 
 
-video=moviepy.editor.VideoFileClip('Biden_Ad_Pd4.mp4')
+video=moviepy.editor.VideoFileClip(argv[1])
 audio=video.audio
-audio.write_audiofile('Biden_Ad.mp3')
+audio.write_audiofile("video.mp3")
 
 #Run whisper part after mp3 has been formed
 
@@ -12,7 +13,7 @@ audio.write_audiofile('Biden_Ad.mp3')
 
 
 model = whisper.load_model("base")
-result = model.transcribe("Biden_Ad.mp3")
+result = model.transcribe("video.mp3")
 
 with open("transcription.txt", "w") as f:
     f.write(result["text"])
